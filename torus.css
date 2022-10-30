@@ -1,0 +1,46 @@
+.left {
+    float: left;
+    padding-right: 30px;
+}
+
+.right {
+    float: left;
+}
+
+h2#title {
+    text-align: center;
+}
+
+div#type-level-0 {
+    margin-bottom: 10px;
+}
+
+div.group {
+    padding-top: 20px;
+    display: none;
+}
+
+label.type,
+label.subtype {
+    display: inline-block;
+    font-size: 11pt;
+}
+
+label.type {
+    width: 38px;
+}
+
+label.subtype {
+    width: 65px;
+}
+
+input.transf {
+    width: 92px;
+}
+
+input.iter {
+    width: 70px;
+}
+input.init {
+    width: 70px;
+}
