@@ -67,9 +67,12 @@ class DomGroup {
 }
 
 class Transformation {
-    public static readonly backColorFixed = '#D66';
-    public static readonly backColorRelated = '#DD6';
-    public static readonly backColorFree = '#FFF';
+    public static readonly backColorFixed = '#B66';
+    public static readonly backColorAvoid1 = '#DD6';
+    public static readonly backColorAvoid2 = '#CC7';
+    public static readonly backColorRelated1 = '#8B8';
+    public static readonly backColorRelated2 = '#9A9';
+    public static readonly backColorFree = '#DDD';
     public static readonly foreColorNormal = '#000';
     public static readonly foreColorAvoid = '#F00';
 
@@ -217,9 +220,30 @@ class Transformation {
     }
 
     private static setBackgroundColor(d: HTMLInputElement, usage: string) {
-        d.style.backgroundColor = usage === 'x' || usage === 'X' ? this.backColorFixed :
-            usage === 'r' || usage === 'R' ? this.backColorRelated :
-                this.backColorFree;
+        switch (usage) {
+            case 'x':
+            case 'X':
+                d.style.backgroundColor = this.backColorFixed;
+                break;
+            case 'a':
+            case 'A':
+                d.style.backgroundColor = this.backColorAvoid1;
+                break;
+            case 'b':
+            case 'B':
+                d.style.backgroundColor = this.backColorAvoid2;
+                break;
+            case 'r':
+            case 'R':
+                d.style.backgroundColor = this.backColorRelated1;
+                break;
+            case 's':
+            case 'S':
+                d.style.backgroundColor = this.backColorRelated2;
+                break;
+            default: // 'f', 'F'
+                d.style.backgroundColor = this.backColorFree;
+        }
     }
 }
 
