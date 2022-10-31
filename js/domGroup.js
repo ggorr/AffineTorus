@@ -176,14 +176,38 @@ class Transformation {
         return new AffineTx(evaluate(this.m[0].value), evaluate(this.m[1].value), evaluate(this.m[2].value), evaluate(this.m[3].value), evaluate(this.m[4].value), evaluate(this.m[5].value));
     }
     static setBackgroundColor(d, usage) {
-        d.style.backgroundColor = usage === 'x' || usage === 'X' ? this.backColorFixed :
-            usage === 'r' || usage === 'R' ? this.backColorRelated :
-                this.backColorFree;
+        switch (usage) {
+            case 'x':
+            case 'X':
+                d.style.backgroundColor = this.backColorFixed;
+                break;
+            case 'a':
+            case 'A':
+                d.style.backgroundColor = this.backColorAvoid1;
+                break;
+            case 'b':
+            case 'B':
+                d.style.backgroundColor = this.backColorAvoid2;
+                break;
+            case 'r':
+            case 'R':
+                d.style.backgroundColor = this.backColorRelated1;
+                break;
+            case 's':
+            case 'S':
+                d.style.backgroundColor = this.backColorRelated2;
+                break;
+            default: // 'f', 'F'
+                d.style.backgroundColor = this.backColorFree;
+        }
     }
 }
-Transformation.backColorFixed = '#D66';
-Transformation.backColorRelated = '#DD6';
-Transformation.backColorFree = '#FFF';
+Transformation.backColorFixed = '#B66';
+Transformation.backColorAvoid1 = '#DD6';
+Transformation.backColorAvoid2 = '#CC7';
+Transformation.backColorRelated1 = '#8B8';
+Transformation.backColorRelated2 = '#9A9';
+Transformation.backColorFree = '#DDD';
 Transformation.foreColorNormal = '#000';
 Transformation.foreColorAvoid = '#F00';
 export { DomGroup, Transformation };
