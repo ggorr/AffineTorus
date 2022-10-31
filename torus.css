@@ -34,6 +34,10 @@ label.subtype {
     width: 65px;
 }
 
+input {
+    background-color: #DDD;
+}
+
 input.transf {
     width: 92px;
 }
