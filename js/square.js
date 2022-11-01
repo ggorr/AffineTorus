@@ -1,13 +1,16 @@
 "use strict";
 import Vector from "./vector.js";
+function trunc(x) {
+    // return Math.round(x * 100000) / 100000;
+    let str = (Math.round(x * 100000) / 100000).toString();
+    return x > 0 ? (str.length > 2 && x < 1 ? str.slice(1) : str) : x < 0 ? (str.length > 3 && x > -1 ? '-' + str.slice(2) : str) : str;
+}
 class Square {
-    // private sides: string;
     constructor(a, b, c, d) {
         this.a = a;
         this.b = b;
         this.c = c;
         this.d = d;
-        // this.sides = 'none';
     }
     copy() {
         return new Square(this.a.copy(), this.b.copy(), this.c.copy(), this.d.copy());
@@ -15,6 +18,9 @@ class Square {
     getByGroup(tg, a = new Vector(1, 1)) {
         let b = tg.F.transf(a);
         return new Square(a, b, tg.G.transf(b), tg.G.transf(a));
+    }
+    meetWith(rect) {
+        return this.a.containedIn(rect) || this.b.containedIn(rect) || this.c.containedIn(rect) || this.d.containedIn(rect);
     }
     static getByAffineTx(f, g, a = new Vector(1, 1)) {
         let b = f.transf(a);
@@ -86,6 +92,38 @@ class Square {
                 context.lineTo(this.c.X, this.c.Y);
         }
         context.stroke();
+    }
+    strokeSvg(sides) {
+        let path = `<path d='`;
+        switch (sides) {
+            case 'a': // initial square
+                path += `M${trunc(this.a.X)} ${trunc(this.a.Y)}L${trunc(this.b.X)} ${trunc(this.b.Y)}L${trunc(this.c.X)} ${trunc(this.c.Y)}L${trunc(this.d.X)} ${trunc(this.d.Y)}Z`;
+                break;
+            case 'r': // right
+                path += `M${trunc(this.a.X)} ${trunc(this.a.Y)}L${trunc(this.b.X)} ${trunc(this.b.Y)}L${trunc(this.c.X)} ${trunc(this.c.Y)}L${trunc(this.d.X)} ${trunc(this.d.Y)}`;
+                break;
+            case 'u': //up
+                path += `M${trunc(this.b.X)} ${trunc(this.b.Y)}L${trunc(this.c.X)} ${trunc(this.c.Y)}L${trunc(this.d.X)} ${trunc(this.d.Y)}L${trunc(this.a.X)} ${trunc(this.a.Y)}`;
+                break;
+            case 'l': // left
+                path += `M${trunc(this.c.X)} ${trunc(this.c.Y)}L${trunc(this.d.X)} ${trunc(this.d.Y)}L${trunc(this.a.X)} ${trunc(this.a.Y)}L${trunc(this.b.X)} ${trunc(this.b.Y)}`;
+                break;
+            case 'd': // down
+                path += `M${trunc(this.d.X)} ${trunc(this.d.Y)}L${trunc(this.a.X)} ${trunc(this.a.Y)}L${trunc(this.b.X)} ${trunc(this.b.Y)}L${trunc(this.c.X)} ${trunc(this.c.Y)}`;
+                break;
+            case 'ur': // up right
+                path += `M${trunc(this.b.X)} ${trunc(this.b.Y)}L${trunc(this.c.X)} ${trunc(this.c.Y)}L${trunc(this.d.X)} ${trunc(this.d.Y)}`;
+                break;
+            case 'ul': // up left
+                path += `M${trunc(this.c.X)} ${trunc(this.c.Y)}L${trunc(this.d.X)} ${trunc(this.d.Y)}L${trunc(this.a.X)} ${trunc(this.a.Y)}`;
+                break;
+            case 'dl': // down left
+                path += `M${trunc(this.d.X)} ${trunc(this.d.Y)}L${trunc(this.a.X)} ${trunc(this.a.Y)}L${trunc(this.b.X)} ${trunc(this.b.Y)}`;
+                break;
+            case 'dr': // down right
+                path += `M${trunc(this.a.X)} ${trunc(this.a.Y)}L${trunc(this.b.X)} ${trunc(this.b.Y)}L${trunc(this.c.X)} ${trunc(this.c.Y)}`;
+        }
+        return path + `'/>`;
     }
     static transf(f, s) {
         return new Square(Vector.transf(f, s.a), Vector.transf(f, s.b), Vector.transf(f, s.c), Vector.transf(f, s.d));
