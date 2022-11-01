@@ -9,6 +9,9 @@ class Vector {
     }
     get X() { return this.x; }
     get Y() { return this.y; }
+    containedIn(rect) {
+        return rect[0] <= this.x && this.x <= rect[2] && rect[1] <= this.y && this.y <= rect[3];
+    }
     neg() {
         this.x = -this.x;
         this.y = -this.y;
