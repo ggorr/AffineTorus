@@ -1,6 +1,21 @@
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+    height: 100%;
+}
+
 .left {
     float: left;
-    padding-right: 30px;
+    padding-right: 0px;
+    margin-right: 10px;
+    overflow-y: auto;
+    position: relative;
+    height: 100%;
 }
 
 .right {
@@ -16,7 +31,7 @@ div#type-level-0 {
 }
 
 div.group {
-    padding-top: 20px;
+    padding-top: 10px;
     display: none;
 }
 
@@ -34,17 +49,19 @@ label.subtype {
     width: 65px;
 }
 
-input {
-    background-color: #DDD;
-}
-
 input.transf {
+    background-color: #DDD;
     width: 92px;
 }
 
 input.iter {
     width: 70px;
 }
+
 input.init {
     width: 70px;
+}
+
+input#svg-file {
+    width: 120px
 }
