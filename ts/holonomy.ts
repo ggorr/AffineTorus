@@ -22,37 +22,63 @@ class Holonomy {
     public get InvF() { return this.invF; }
     public get InvG() { return this.invG; }
 
-    public develop(context: CanvasRenderingContext2D, iter: number, p: Vector = new Vector(1, 1)): void {
+    public develop(context: CanvasRenderingContext2D, iter: number, p: Vector, view: number[]): string {
         let sq = Square.getByAffineTx(this.f, this.g, p);
         let lsq = sq.copy();
         let rsq = sq.copy();
         let usq = sq.copy();
         let dsq = sq.copy();
         sq.stroke(context, 'a');
+        let svg: string = sq.strokeSvg('a');
         for (let i = 0; i < iter; i++) {
             rsq.transfBy(this.f);
-            rsq.stroke(context, 'r')
+            if (rsq.meetWith(view)) {
+                rsq.stroke(context, 'r');
+                svg += rsq.strokeSvg('r');
+            }
             lsq.transfBy(this.invF);
-            lsq.stroke(context, 'l');
+            if (lsq.meetWith(view)) {
+                lsq.stroke(context, 'l');
+                svg += lsq.strokeSvg('l');
+            }
             usq.transfBy(this.g);
-            usq.stroke(context, 'u');
+            if (usq.meetWith(view)) {
+                usq.stroke(context, 'u');
+                svg += usq.strokeSvg('u');
+            }
             dsq.transfBy(this.invG);
-            dsq.stroke(context, 'd');
+            if (dsq.meetWith(view)) {
+                dsq.stroke(context, 'd');
+                svg += dsq.strokeSvg('d');
+            }
             let ursq = rsq.copy();
             let drsq = rsq.copy();
             let ulsq = lsq.copy();
             let dlsq = lsq.copy();
             for (let j = 0; j < iter; j++) {
                 ursq.transfBy(this.g);
-                ursq.stroke(context, 'ur');
+                if (ursq.meetWith(view)) {
+                    ursq.stroke(context, 'ur');
+                    svg += ursq.strokeSvg('ur');
+                }
                 drsq.transfBy(this.invG);
-                drsq.stroke(context, 'dr');
+                if (drsq.meetWith(view)) {
+                    drsq.stroke(context, 'dr');
+                    svg += drsq.strokeSvg('dr');
+                }
                 ulsq.transfBy(this.g);
-                ulsq.stroke(context, 'ul');
+                if (ulsq.meetWith(view)) {
+                    ulsq.stroke(context, 'ul');
+                    svg += ulsq.strokeSvg('ul');
+                }
                 dlsq.transfBy(this.invG);
-                dlsq.stroke(context, 'dl');
+                if (dlsq.meetWith(view)) {
+                    dlsq.stroke(context, 'dl');
+                    svg += dlsq.strokeSvg('dl');
+                }
             }
         }
+        return svg;
     }
 }
 
