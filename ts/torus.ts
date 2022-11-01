@@ -8,7 +8,11 @@ import *  as type4 from "./type4.js";
 import *  as type5 from "./type5.js";
 import { domGroups as dgs } from './elememts.js';
 
-function onclickType(type: number) {
+let type:number = -1;
+let subtype:number = -1;
+
+function onclickType(_type: number) {
+    type = _type;
     switch (type) {
         case 1:
             type1.revealSubtypes();
@@ -27,7 +31,8 @@ function onclickType(type: number) {
     }
 }
 
-function onclickSubtype(type: number, subtype: number) {
+function onclickSubtype(type: number, _subtype: number) {
+    subtype = _subtype;
     dgs.forEach(dg => dg.reset());
     switch (type) {
         case 1:
@@ -63,6 +68,10 @@ function onclickSubtype(type: number, subtype: number) {
 
 }
 
+let svg: string | null = null;
+let unit: number = 0;
+let view: number[] = [];
+
 function develop(domGroupIndex: number): void {
     let offset = 10;
     let canvas = document.getElementById('canvas') as HTMLCanvasElement;
@@ -70,14 +79,42 @@ function develop(domGroupIndex: number): void {
     let context = canvas.getContext('2d') as CanvasRenderingContext2D;
     context.strokeStyle = "#448";
 
-    let unit = dgs[domGroupIndex].getUnit();
+    unit = dgs[domGroupIndex].getUnit();
     let cenX = canvas.width / 2 + offset;
     let cenY = canvas.height / 2 + offset;
     context.setTransform(unit, 0, 0, -unit, cenX, cenY);
     context.lineWidth = 1 / unit;
+    view = [-canvas.width / (2 * unit), -canvas.height / (2 * unit), canvas.width / (2 * unit), canvas.height / (2 * unit)];
 
     let hol = new Holonomy(dgs[domGroupIndex].F.getAffineTx(), dgs[domGroupIndex].G.getAffineTx());
-    hol.develop(context, dgs[domGroupIndex].getIter(), dgs[domGroupIndex].getInit());
+    svg = hol.develop(context, dgs[domGroupIndex].getIter(), dgs[domGroupIndex].getInit(), view);
+    setSvgFile(domGroupIndex);
 }
 
-export { onclickType, onclickSubtype, develop };
+function setSvgFile(domGroupIndex: number): void {
+    const typeStr = ['I', 'II', 'III', 'IV', 'V'];
+    (document.getElementById('svg-file') as HTMLInputElement).value = `${typeStr[type - 1]}${subtype + 1}-${domGroupIndex + 1}.svg`;;
+}
+
+function downloadSvg(): void {
+    if (svg == null)
+        return;
+    let canvas = document.getElementById('canvas') as HTMLCanvasElement;
+    let fullSvg = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" 
+    baseProfile="full" 
+    transform="matrix(1 0 0 -1 10 10)"
+    width="${canvas.width}" height="${canvas.height}" 
+    viewBox="${view[0]} ${view[1]} ${view[2]-view[0]} ${view[3]-view[1]}"
+    stroke="#448" 
+    stroke-width="${1 / unit}" 
+    fill="transparent">
+    ${svg}
+    </svg>`;
+
+    let blob = new Blob([fullSvg], { type: 'image/svg+xml' });
+    let link = document.createElement("a");
+    link.download = (document.getElementById('svg-file') as HTMLInputElement).value;
+    link.href = window.URL.createObjectURL(blob);
+    link.click();
+}
+export { onclickType, onclickSubtype, develop, downloadSvg };
