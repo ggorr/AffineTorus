@@ -21,6 +21,10 @@ class Vector {
     public get X(): number { return this.x; }
     public get Y(): number { return this.y; }
 
+    public containedIn(rect: number[]): boolean {
+        return rect[0] <= this.x && this.x <= rect[2] && rect[1] <= this.y && this.y <= rect[3];
+    }
+
     public neg(): void {
         this.x = -this.x;
         this.y = -this.y;
