@@ -4,19 +4,23 @@ import Vector from "./vector.js";
 import AffineTx from "./affineTx.js";
 import Holonomy from "./holonomy.js";
 
+function trunc(x:number) : string {
+	// return Math.round(x * 100000) / 100000;
+	let str = (Math.round(x * 100000) / 100000).toString();
+	return x > 0 ? (str.length > 2 && x < 1 ? str.slice(1) : str) : x < 0 ? (str.length > 3 && x > -1 ? '-' + str.slice(2) : str) : str;
+}
+
 class Square {
     private a: Vector;
     private b: Vector;
     private c: Vector;
     private d: Vector;
-    // private sides: string;
 
     public constructor(a: Vector, b: Vector, c: Vector, d: Vector) {
         this.a = a;
         this.b = b;
         this.c = c;
         this.d = d;
-        // this.sides = 'none';
     }
 
     public copy(): Square {
@@ -26,6 +30,10 @@ class Square {
     public getByGroup(tg: Holonomy, a: Vector = new Vector(1, 1)): Square {
         let b = tg.F.transf(a);
         return new Square(a, b, tg.G.transf(b), tg.G.transf(a));
+    }
+
+    public meetWith(rect:number[]) : boolean {
+        return this.a.containedIn(rect) || this.b.containedIn(rect) || this.c.containedIn(rect) || this.d.containedIn(rect);
     }
 
     public static getByAffineTx(f: AffineTx, g: AffineTx, a: Vector = new Vector(1, 1)) {
@@ -101,6 +109,39 @@ class Square {
                 context.lineTo(this.c.X, this.c.Y);
         }
         context.stroke();
+    }
+
+    public strokeSvg(sides: string): string {
+        let path = `<path d='`;
+        switch (sides) {
+            case 'a': // initial square
+                path += `M${trunc(this.a.X)} ${trunc(this.a.Y)}L${trunc(this.b.X)} ${trunc(this.b.Y)}L${trunc(this.c.X)} ${trunc(this.c.Y)}L${trunc(this.d.X)} ${trunc(this.d.Y)}Z`;
+                break;
+            case 'r': // right
+                path += `M${trunc(this.a.X)} ${trunc(this.a.Y)}L${trunc(this.b.X)} ${trunc(this.b.Y)}L${trunc(this.c.X)} ${trunc(this.c.Y)}L${trunc(this.d.X)} ${trunc(this.d.Y)}`;
+                break;
+            case 'u': //up
+                path += `M${trunc(this.b.X)} ${trunc(this.b.Y)}L${trunc(this.c.X)} ${trunc(this.c.Y)}L${trunc(this.d.X)} ${trunc(this.d.Y)}L${trunc(this.a.X)} ${trunc(this.a.Y)}`;
+                break;
+            case 'l': // left
+                path += `M${trunc(this.c.X)} ${trunc(this.c.Y)}L${trunc(this.d.X)} ${trunc(this.d.Y)}L${trunc(this.a.X)} ${trunc(this.a.Y)}L${trunc(this.b.X)} ${trunc(this.b.Y)}`;
+                break;
+            case 'd': // down
+                path += `M${trunc(this.d.X)} ${trunc(this.d.Y)}L${trunc(this.a.X)} ${trunc(this.a.Y)}L${trunc(this.b.X)} ${trunc(this.b.Y)}L${trunc(this.c.X)} ${trunc(this.c.Y)}`;
+                break;
+            case 'ur': // up right
+                path += `M${trunc(this.b.X)} ${trunc(this.b.Y)}L${trunc(this.c.X)} ${trunc(this.c.Y)}L${trunc(this.d.X)} ${trunc(this.d.Y)}`;
+                break;
+            case 'ul': // up left
+                path += `M${trunc(this.c.X)} ${trunc(this.c.Y)}L${trunc(this.d.X)} ${trunc(this.d.Y)}L${trunc(this.a.X)} ${trunc(this.a.Y)}`;
+                break;
+            case 'dl': // down left
+                path += `M${trunc(this.d.X)} ${trunc(this.d.Y)}L${trunc(this.a.X)} ${trunc(this.a.Y)}L${trunc(this.b.X)} ${trunc(this.b.Y)}`;
+                break;
+            case 'dr': // down right
+                path += `M${trunc(this.a.X)} ${trunc(this.a.Y)}L${trunc(this.b.X)} ${trunc(this.b.Y)}L${trunc(this.c.X)} ${trunc(this.c.Y)}`;
+        }
+		return path + `'/>`;
     }
 
     public static transf(f: AffineTx, s: Square): Square {
