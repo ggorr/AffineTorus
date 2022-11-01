@@ -8,7 +8,7 @@
 	<title>Developing Images of an Affine Tori</title>
 	<link rel="stylesheet" href="torus.css">
 	<script type="module">'use strict';
-		import { onclickType, onclickSubtype, develop } from './js/torus.js';
+		import { onclickType, onclickSubtype, develop, downloadSvg } from './js/torus.js';
 
 		let type = 0;
 		for (let i = 1; i <= 5; i++)
@@ -24,6 +24,7 @@
 			});
 		for (let i = 0; i < 4; i++)
 			document.getElementById('g' + i + '-develop').addEventListener('click', () => develop(i));
+		document.getElementById('svg').addEventListener('click', downloadSvg);
 
 		window.onload = function () {
 			document.getElementById('type2').click();
@@ -161,7 +162,8 @@
 				value="1">&nbsp;<input class="init" id="g3-init1" value="1"><br><label class="iter" for="g3-unit">unit:
 			</label><input class="iter" id="g3-unit" value="30">&nbsp;<label class="iter" for="g3-iter">iter:
 			</label><input class="iter" id="g3-iter" value="200">&nbsp;<button id="g3-develop">Develop</button>
-		</div><br>
+		</div>
+		<p> <input id="svg-file">&nbsp;<button class="svg" id="svg">Download SVG</button></p>
 		<p>by K. Park<br>ggorr.kp@gmail.com</p>
 	</div>
 	<div class="right" id="right"><canvas id="canvas"></canvas></div>
