@@ -1,12 +1,8 @@
 'use strict';
 import { radio, label, domGroups as dgs } from './elememts.js';
 function revealSubtypes() {
-    radio[0].style.display = 'none';
-    radio[1].style.display = 'none';
-    radio[2].style.display = 'none';
-    label[0].style.display = 'none';
-    label[1].style.display = 'none';
-    label[2].style.display = 'none';
+    radio.map(r => r.style.display = 'none');
+    label.map(l => l.style.display = 'none');
 }
 function displayV() {
     dgs[0].setVisible(true);
