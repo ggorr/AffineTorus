@@ -31,7 +31,7 @@ function onclickType(_type: number) {
     }
 }
 
-function onclickSubtype(type: number, _subtype: number) {
+function onclickSubtype(_subtype: number) {
     subtype = _subtype;
     dgs.forEach(dg => dg.reset());
     switch (type) {
@@ -65,7 +65,21 @@ function onclickSubtype(type: number, _subtype: number) {
         default:
             type5.displayV();
     }
+    (document.getElementById('choice') as HTMLDivElement).style.height = 'fit-content';
+    resize();
+}
 
+function resize() {
+    // let leftHeight = document.getElementById('left').clientHeight;
+    let windowHeight = window.innerHeight;
+    let titleHeight = (document.getElementById('title') as HTMLDivElement).scrollHeight;
+    let authorHeight = (document.getElementById('author') as HTMLDivElement).scrollHeight;
+    let choiceHeight = (document.getElementById('choice') as HTMLDivElement).scrollHeight;
+    let height = Math.min(choiceHeight, windowHeight - titleHeight - authorHeight - 52);
+    if (height < choiceHeight / 2)
+        height = choiceHeight;
+    (document.getElementById('choice') as HTMLDivElement).style.height = height + 'px';
+    // console.log(leftHeight + ', ' + titleHeight + ', ' + authorHeight + ', ' + choiceHeight + ', ' + windowHeight);
 }
 
 let svg: string | null = null;
@@ -118,4 +132,4 @@ function downloadSvg(): void {
     link.href = window.URL.createObjectURL(blob);
     link.click();
 }
-export { onclickType, onclickSubtype, develop, downloadSvg };
+export { onclickType, onclickSubtype, resize, develop, downloadSvg };
