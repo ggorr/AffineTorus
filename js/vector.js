@@ -1,4 +1,9 @@
 "use strict";
+function trunc(x) {
+    // return Math.round(x * 100000) / 100000;
+    let str = (Math.round(x * 100000) / 100000).toString();
+    return x > 0 ? (str.length > 2 && x < 1 ? str.slice(1) : str) : x < 0 ? (str.length > 3 && x > -1 ? '-' + str.slice(2) : str) : str;
+}
 class Vector {
     constructor(x, y) {
         this.x = x;
@@ -9,6 +14,9 @@ class Vector {
     }
     get X() { return this.x; }
     get Y() { return this.y; }
+    svg() {
+        return `${trunc(this.X)} ${trunc(this.Y)}`;
+    }
     containedIn(rect) {
         return rect[0] <= this.x && this.x <= rect[2] && rect[1] <= this.y && this.y <= rect[3];
     }
