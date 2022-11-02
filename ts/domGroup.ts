@@ -82,10 +82,11 @@ class Transformation {
     public constructor(m11: HTMLInputElement, m21: HTMLInputElement, m12: HTMLInputElement, m22: HTMLInputElement, a1: HTMLInputElement, a2: HTMLInputElement) {
         this.m = [m11, m21, m12, m22, a1, a2];
         this.el = [];
-        for (let i = 0; i < 6; i++)
-            this.m[i].addEventListener('mouseover', () => {
-                this.m[i].setAttribute('title', evaluate(this.m[i].value).toString())
-            });
+        this.m.forEach(v =>
+            v.addEventListener('mouseover', () => {
+                v.setAttribute('title', evaluate(v.value).toString())
+            })
+        );
     }
 
     public get M11() { return this.m[0]; }
@@ -100,20 +101,16 @@ class Transformation {
     }
 
     public setValue(values: string[] | number[]): void {
-        for (let i = 0; i < 6; i++)
-            this.m[i].value = values[i].toString();
+        this.m.forEach((d, i) => d.value = values[i].toString());
     }
 
     public setUsage(usages: string): void {
-        for (let i = 0; i < 6; i++)
-            Transformation.setBackgroundColor(this.m[i], usages[i]);
+        this.m.forEach((d, i) => Transformation.setBackgroundColor(d, usages[i]));
     }
 
     public reset(): void {
         this.clearEventListener();
-        this.m.forEach(d => {
-            d.style.color = Transformation.foreColorNormal;
-        });
+        this.m.forEach(d => d.style.color = Transformation.foreColorNormal);
     }
 
     public addRelation(i: number, j: number, negative: boolean = false): void {
@@ -155,8 +152,7 @@ class Transformation {
     }
 
     public clearEventListener(): void {
-        for (let k = 0; k < this.el.length; k++)
-            this.el[k].src.removeEventListener('input', this.el[k].listener);
+        this.el.forEach(e => e.src.removeEventListener('input', e.listener));
         this.el = [];
     }
 
