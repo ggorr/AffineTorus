@@ -68,15 +68,16 @@ let view = [];
 function develop(domGroupIndex) {
     let offset = 10;
     let canvas = document.getElementById('canvas');
-    canvas.height = canvas.width = Math.min(window.innerWidth, window.innerHeight) - 2 * offset;
+    canvas.height = canvas.width = Math.min(window.innerWidth, window.innerHeight);
     let context = canvas.getContext('2d');
     context.strokeStyle = "#448";
     unit = dgs[domGroupIndex].getUnit();
-    let cenX = canvas.width / 2 + offset;
-    let cenY = canvas.height / 2 + offset;
+    let cenX = canvas.width / 2;
+    let cenY = canvas.height / 2;
     context.setTransform(unit, 0, 0, -unit, cenX, cenY);
     context.lineWidth = 1 / unit;
-    view = [-canvas.width / (2 * unit), -canvas.height / (2 * unit), canvas.width / (2 * unit), canvas.height / (2 * unit)];
+    view = [-canvas.width, -canvas.height, canvas.width, canvas.height]
+        .map(x => x / (2 * unit));
     let hol = new Holonomy(dgs[domGroupIndex].F.getAffineTx(), dgs[domGroupIndex].G.getAffineTx());
     svg = hol.develop(context, dgs[domGroupIndex].getIter(), dgs[domGroupIndex].getInit(), view);
     setSvgFile(domGroupIndex);
@@ -92,7 +93,7 @@ function downloadSvg() {
     let canvas = document.getElementById('canvas');
     let fullSvg = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" 
     baseProfile="full" 
-    transform="matrix(1 0 0 -1 10 10)"
+    transform="matrix(1 0 0 -1 0 0)"
     width="${canvas.width}" height="${canvas.height}" 
     viewBox="${view[0]} ${view[1]} ${view[2] - view[0]} ${view[3] - view[1]}"
     stroke="#448" 
