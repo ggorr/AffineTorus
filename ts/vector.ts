@@ -2,6 +2,12 @@
 
 import AffineTx from "./affineTx.js";
 
+function trunc(x: number): string {
+    // return Math.round(x * 100000) / 100000;
+    let str = (Math.round(x * 100000) / 100000).toString();
+    return x > 0 ? (str.length > 2 && x < 1 ? str.slice(1) : str) : x < 0 ? (str.length > 3 && x > -1 ? '-' + str.slice(2) : str) : str;
+}
+
 class Vector {
     private x: number;
     private y: number;
@@ -20,6 +26,10 @@ class Vector {
 
     public get X(): number { return this.x; }
     public get Y(): number { return this.y; }
+
+    public svg(): string {
+        return `${trunc(this.X)} ${trunc(this.Y)}`;
+    }
 
     public containedIn(rect: number[]): boolean {
         return rect[0] <= this.x && this.x <= rect[2] && rect[1] <= this.y && this.y <= rect[3];
