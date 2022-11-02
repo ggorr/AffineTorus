@@ -4,12 +4,6 @@ import Vector from "./vector.js";
 import AffineTx from "./affineTx.js";
 import Holonomy from "./holonomy.js";
 
-function trunc(x:number) : string {
-	// return Math.round(x * 100000) / 100000;
-	let str = (Math.round(x * 100000) / 100000).toString();
-	return x > 0 ? (str.length > 2 && x < 1 ? str.slice(1) : str) : x < 0 ? (str.length > 3 && x > -1 ? '-' + str.slice(2) : str) : str;
-}
-
 class Square {
     private a: Vector;
     private b: Vector;
@@ -32,7 +26,7 @@ class Square {
         return new Square(a, b, tg.G.transf(b), tg.G.transf(a));
     }
 
-    public meetWith(rect:number[]) : boolean {
+    public meetWith(rect: number[]): boolean {
         return this.a.containedIn(rect) || this.b.containedIn(rect) || this.c.containedIn(rect) || this.d.containedIn(rect);
     }
 
@@ -115,33 +109,33 @@ class Square {
         let path = `<path d='`;
         switch (sides) {
             case 'a': // initial square
-                path += `M${trunc(this.a.X)} ${trunc(this.a.Y)}L${trunc(this.b.X)} ${trunc(this.b.Y)}L${trunc(this.c.X)} ${trunc(this.c.Y)}L${trunc(this.d.X)} ${trunc(this.d.Y)}Z`;
+                path += `M${this.a.svg()}L${this.b.svg()}L${this.c.svg()}L${this.d.svg()}Z`;
                 break;
             case 'r': // right
-                path += `M${trunc(this.a.X)} ${trunc(this.a.Y)}L${trunc(this.b.X)} ${trunc(this.b.Y)}L${trunc(this.c.X)} ${trunc(this.c.Y)}L${trunc(this.d.X)} ${trunc(this.d.Y)}`;
+                path += `M${this.a.svg()}L${this.b.svg()}L${this.c.svg()}L${this.d.svg()}`;
                 break;
             case 'u': //up
-                path += `M${trunc(this.b.X)} ${trunc(this.b.Y)}L${trunc(this.c.X)} ${trunc(this.c.Y)}L${trunc(this.d.X)} ${trunc(this.d.Y)}L${trunc(this.a.X)} ${trunc(this.a.Y)}`;
+                path += `M${this.b.svg()}L${this.c.svg()}L${this.d.svg()}L${this.a.svg()}`;
                 break;
             case 'l': // left
-                path += `M${trunc(this.c.X)} ${trunc(this.c.Y)}L${trunc(this.d.X)} ${trunc(this.d.Y)}L${trunc(this.a.X)} ${trunc(this.a.Y)}L${trunc(this.b.X)} ${trunc(this.b.Y)}`;
+                path += `M${this.c.svg()}L${this.d.svg()}L${this.a.svg()}L${this.b.svg()}`;
                 break;
             case 'd': // down
-                path += `M${trunc(this.d.X)} ${trunc(this.d.Y)}L${trunc(this.a.X)} ${trunc(this.a.Y)}L${trunc(this.b.X)} ${trunc(this.b.Y)}L${trunc(this.c.X)} ${trunc(this.c.Y)}`;
+                path += `M${this.d.svg()}L${this.a.svg()}L${this.b.svg()}L${this.c.svg()}`;
                 break;
             case 'ur': // up right
-                path += `M${trunc(this.b.X)} ${trunc(this.b.Y)}L${trunc(this.c.X)} ${trunc(this.c.Y)}L${trunc(this.d.X)} ${trunc(this.d.Y)}`;
+                path += `M${this.b.svg()}L${this.c.svg()}L${this.d.svg()}`;
                 break;
             case 'ul': // up left
-                path += `M${trunc(this.c.X)} ${trunc(this.c.Y)}L${trunc(this.d.X)} ${trunc(this.d.Y)}L${trunc(this.a.X)} ${trunc(this.a.Y)}`;
+                path += `M${this.c.svg()}L${this.d.svg()}L${this.a.svg()}`;
                 break;
             case 'dl': // down left
-                path += `M${trunc(this.d.X)} ${trunc(this.d.Y)}L${trunc(this.a.X)} ${trunc(this.a.Y)}L${trunc(this.b.X)} ${trunc(this.b.Y)}`;
+                path += `M${this.d.svg()}L${this.a.svg()}L${this.b.svg()}`;
                 break;
             case 'dr': // down right
-                path += `M${trunc(this.a.X)} ${trunc(this.a.Y)}L${trunc(this.b.X)} ${trunc(this.b.Y)}L${trunc(this.c.X)} ${trunc(this.c.Y)}`;
+                path += `M${this.a.svg()}L${this.b.svg()}L${this.c.svg()}`;
         }
-		return path + `'/>`;
+        return path + `'/>`;
     }
 
     public static transf(f: AffineTx, s: Square): Square {
