@@ -50,10 +50,9 @@ class Transformation {
     constructor(m11, m21, m12, m22, a1, a2) {
         this.m = [m11, m21, m12, m22, a1, a2];
         this.el = [];
-        for (let i = 0; i < 6; i++)
-            this.m[i].addEventListener('mouseover', () => {
-                this.m[i].setAttribute('title', evaluate(this.m[i].value).toString());
-            });
+        this.m.forEach(v => v.addEventListener('mouseover', () => {
+            v.setAttribute('title', evaluate(v.value).toString());
+        }));
     }
     get M11() { return this.m[0]; }
     get M21() { return this.m[1]; }
@@ -65,18 +64,14 @@ class Transformation {
         this.m = [m11, m21, m12, m22, a1, a2];
     }
     setValue(values) {
-        for (let i = 0; i < 6; i++)
-            this.m[i].value = values[i].toString();
+        this.m.forEach((d, i) => d.value = values[i].toString());
     }
     setUsage(usages) {
-        for (let i = 0; i < 6; i++)
-            Transformation.setBackgroundColor(this.m[i], usages[i]);
+        this.m.forEach((d, i) => Transformation.setBackgroundColor(d, usages[i]));
     }
     reset() {
         this.clearEventListener();
-        this.m.forEach(d => {
-            d.style.color = Transformation.foreColorNormal;
-        });
+        this.m.forEach(d => d.style.color = Transformation.foreColorNormal);
     }
     addRelation(i, j, negative = false) {
         if (negative) {
@@ -114,8 +109,7 @@ class Transformation {
             }
     }
     clearEventListener() {
-        for (let k = 0; k < this.el.length; k++)
-            this.el[k].src.removeEventListener('input', this.el[k].listener);
+        this.el.forEach(e => e.src.removeEventListener('input', e.listener));
         this.el = [];
     }
     avoid1(i) {
