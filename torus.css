@@ -11,7 +11,7 @@ body {
 
 .left {
     float: left;
-    padding-right: 0px;
+    padding-right: 10px;
     margin-right: 10px;
     overflow-y: auto;
     position: relative;
@@ -22,23 +22,36 @@ body {
     float: left;
 }
 
-h2#title {
+div#choice {
+    padding-right: 10px;
+    overflow-y: auto;
+    position: relative;
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+div.svg {
+    margin-top: 7px;
+    margin-bottom: 10px;
+}
+
+h3.title {
     text-align: center;
 }
 
 div#type-level-0 {
-    margin-bottom: 10px;
+    margin-bottom: 7px;
 }
 
 div.group {
-    padding-top: 10px;
+    padding-top: 7px;
     display: none;
 }
 
 label.type,
 label.subtype {
     display: inline-block;
-    font-size: 11pt;
+    font-size: 10.5pt;
 }
 
 label.type {
