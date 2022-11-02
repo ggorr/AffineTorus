@@ -27,7 +27,7 @@ function onclickType(_type) {
             type5.revealSubtypes();
     }
 }
-function onclickSubtype(type, _subtype) {
+function onclickSubtype(_subtype) {
     subtype = _subtype;
     dgs.forEach(dg => dg.reset());
     switch (type) {
@@ -61,6 +61,20 @@ function onclickSubtype(type, _subtype) {
         default:
             type5.displayV();
     }
+    document.getElementById('choice').style.height = 'fit-content';
+    resize();
+}
+function resize() {
+    // let leftHeight = document.getElementById('left').clientHeight;
+    let windowHeight = window.innerHeight;
+    let titleHeight = document.getElementById('title').scrollHeight;
+    let authorHeight = document.getElementById('author').scrollHeight;
+    let choiceHeight = document.getElementById('choice').scrollHeight;
+    let height = Math.min(choiceHeight, windowHeight - titleHeight - authorHeight - 52);
+    if (height < choiceHeight / 2)
+        height = choiceHeight;
+    document.getElementById('choice').style.height = height + 'px';
+    // console.log(leftHeight + ', ' + titleHeight + ', ' + authorHeight + ', ' + choiceHeight + ', ' + windowHeight);
 }
 let svg = null;
 let unit = 0;
@@ -107,4 +121,4 @@ function downloadSvg() {
     link.href = window.URL.createObjectURL(blob);
     link.click();
 }
-export { onclickType, onclickSubtype, develop, downloadSvg };
+export { onclickType, onclickSubtype, resize, develop, downloadSvg };
