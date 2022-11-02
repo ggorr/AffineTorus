@@ -2,7 +2,7 @@
 import { DomGroup, Transformation } from './domGroup.js';
 let radio = [];
 let label = [];
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 3; i++) {
     radio[i] = document.getElementById('radio-sub' + i);
     label[i] = document.getElementById("label-sub" + i);
 }
