@@ -1,15 +1,11 @@
 'use strict';
 import { radio, label, domGroups as dgs } from './elememts.js';
 function revealSubtypes() {
-    radio[0].style.display = 'inline-block';
-    radio[1].style.display = 'inline-block';
-    radio[2].style.display = 'inline-block';
+    radio.map(r => r.style.display = 'inline-block');
+    label.map(l => l.style.display = 'inline-block');
     label[0].innerHTML = '&#8546;-1';
     label[1].innerHTML = '&#8546;-2';
     label[2].innerHTML = '&#8546;-3';
-    label[0].style.display = 'inline-block';
-    label[1].style.display = 'inline-block';
-    label[2].style.display = 'inline-block';
 }
 function displayIII1() {
     dgs[0].setVisible(true);
