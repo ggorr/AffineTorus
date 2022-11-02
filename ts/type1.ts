@@ -3,17 +3,11 @@
 import { radio, label, domGroups as dgs } from './elememts.js';
 
 function revealSubtypes(): void {
-    radio[0].style.display = 'inline-block';
-    radio[1].style.display = 'inline-block';
-    radio[2].style.display = 'inline-block';
-
+    radio.map(r => r.style.display = 'inline-block');
+    label.map(l => l.style.display = 'inline-block');
     label[0].innerHTML = '&#8544;-1-a';
     label[1].innerHTML = '&#8544;-1-b';
     label[2].innerHTML = '&#8544;-2';
-
-    label[0].style.display = 'inline-block';
-    label[1].style.display = 'inline-block';
-    label[2].style.display = 'inline-block';
 }
 
 function displayI1a(): void {
@@ -69,7 +63,7 @@ function displayI1b(): void {
     dgs[1].G.setValue([1, 0, -0.1, 1.2, 1, 1]);
     dgs[1].G.setUsage('XXFAFF')
     dgs[1].G.avoid1(3);
-    
+
     dgs[2].setVisible(true);
     dgs[2].setIter(100);
 
